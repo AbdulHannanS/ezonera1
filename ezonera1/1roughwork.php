@@ -36,6 +36,9 @@ $stmt=$mysqli->prepare("INSERT INTO empname (EmpName, EmpDesig) VALUES (?, ?)");
 		$stmt3->execute();
 	}
 	$mysqli->close();*/
+	session_start();
+	print_r($_SESSION);
+	//session_destroy();
 	if (isset($_POST['vehicle'])) {
 		print_r($_POST);
 	}
@@ -48,6 +51,8 @@ $stmt=$mysqli->prepare("INSERT INTO empname (EmpName, EmpDesig) VALUES (?, ?)");
 <body>
 	<?php
 	$counter=11;
+	$pss="1234";
+	echo md5($pss);
 	?>
 <form method="post" action="" class="abc<?php echo $counter; ?>">
 	<input type="checkbox" name="vehicle[]" value="Bike"> I have a bike<br>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 03, 2019 at 02:14 PM
+-- Generation Time: Jan 05, 2019 at 07:36 PM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -112,6 +112,22 @@ CREATE TABLE `profilelog` (
   `EmpEmailID` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `profilelog`
+--
+
+INSERT INTO `profilelog` (`ProfiledID`, `ProfiledDate`, `RAID`, `CompID`, `JobTitle`, `JobLocation`, `JDLink`, `EmpID`, `EmpEmailID`) VALUES
+(4, '2019-01-04', 1, 1, 'Salesfroce Developer', 'Detroit, MI', 'www.google.com/jdlink', 4, 15),
+(5, '2019-01-04', 1, 1, 'Salesfroce Developer', 'Detroit, MI', 'www.google.com/jdlink', 6, 18),
+(6, '2019-01-04', 1, 1, 'Salesfroce Developer', 'Detroit, MI', 'www.google.com/jdlink', 6, 19),
+(7, '2019-01-04', 1, 1, 'Salesfroce Developer', 'Detroit, MI', 'www.google.com/jdlink', 2, 11),
+(8, '2019-01-04', 1, 1, 'cryptography Engineer', 'Detroit, MI', 'www.google.com/jdlink', 2, 11),
+(9, '2019-01-04', 1, 1, 'cryptography Engineer', 'Detroit, MI', 'www.google.com/jdlink', 5, 16),
+(10, '2019-01-04', 1, 1, 'cryptography Engineer', 'Detroit, MI', 'www.google.com/jdlink', 5, 17),
+(11, '2019-01-04', 1, 1, 'Safety Engineer', 'Detroit, MI', 'www.google.com/jdlink', 1, 10),
+(12, '2019-01-04', 1, 1, 'Safety Engineer', 'Detroit, MI', 'www.google.com/jdlink', 2, 11),
+(13, '2019-01-04', 1, 1, 'asdfasdf', 'asdf', 'asdfdf', 3, 12);
+
 -- --------------------------------------------------------
 
 --
@@ -122,8 +138,16 @@ CREATE TABLE `radetails` (
   `RAID` int(10) NOT NULL,
   `RAName` text NOT NULL,
   `RAemail` varchar(300) NOT NULL,
-  `RAPass` varchar(20) NOT NULL
+  `RAPass` varchar(20) NOT NULL,
+  `RAuserType` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `radetails`
+--
+
+INSERT INTO `radetails` (`RAID`, `RAName`, `RAemail`, `RAPass`, `RAuserType`) VALUES
+(1, 'Test', 'ahannan@ezonestaffing.com', '1234', 'Admin');
 
 --
 -- Indexes for dumped tables
@@ -188,12 +212,12 @@ ALTER TABLE `empname`
 -- AUTO_INCREMENT for table `profilelog`
 --
 ALTER TABLE `profilelog`
-  MODIFY `ProfiledID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `ProfiledID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `radetails`
 --
 ALTER TABLE `radetails`
-  MODIFY `RAID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `RAID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- Constraints for dumped tables
 --

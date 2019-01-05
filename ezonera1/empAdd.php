@@ -2,7 +2,10 @@
 $comp_ID=$_GET['compID'];
 function row_creator($arr)
 {
-$table_row="<tr><td data-toggle='tooltip' title='". $arr[4] ."' class='". $arr[4] ."'> <input type='checkbox' name='empArray[]' value='". $arr[2] ."'> ". $arr[3] ."</td><td>". $arr[5] ."</td><td data-toggle='tooltip' title='". $arr[8] ."' class='". $arr[8] ."'> <input type='checkbox' name='emailArray[]' value='". $arr[6] ."'> ". $arr[7] ."</td></tr>";
+$table_row="<tr>
+<td data-toggle='tooltip' title='". $arr[4] ."' class='". $arr[4] ."'> <input type='checkbox' name='empArray[]' value='". $arr[2] ."'> ". $arr[3] ."</td><td>". $arr[5] ."</td>
+<td data-toggle='tooltip' title='". $arr[8] ."' class='". $arr[8] ."'> <input type='checkbox' name='emailArray[]' value='". $arr[6] ."'> ". $arr[7] ."</td>
+</tr>";
 //return $table_row;
 echo $table_row;
 }
@@ -48,8 +51,7 @@ $result=$mysqli->query($select_query);
 				<h1 style="text-align: center;">Add Employee and Email addresses for</h1>
 				<h3 style="text-align: center;" id="compNameHeading">
 				</h3>
-				<h4 style="text-align: center;" id="compSiteHeading">
-					
+				<h4 style="text-align: center;" id="compSiteHeading">					
 				</h4>
 				<!-- company name so the user knows the company to which he is adding the employee to -->
 			</div>
@@ -57,7 +59,19 @@ $result=$mysqli->query($select_query);
 		<div class="row">
 			<div class="col-sm-12">
 				<!-- list the existing employees here -->
-				<form method="post" action="3roughwork.php?comp=<?php echo $comp_ID; ?>">
+				<form method="post" action="LogInsertBack.php?comp=<?php echo $comp_ID; ?>">
+					<div class="form-group">
+						<label for="jobTitle">Job Title:</label>
+						<input type="text" class="form-control" id="jobTitle" placeholder="Enter job title" name="job_title">
+					</div>
+					<div class="form-group">
+						<label for="jobLoc">Job Location:</label>
+						<input type="text" class="form-control" id="jobLoc" placeholder="Enter job Location" name="job_loc">
+					</div>
+					<div class="form-group">
+						<label for="JDLink">Job Description Link:</label>
+						<input type="text" class="form-control" id="JDLink" placeholder="Enter job Description link" name="JD_link" maxlength="2000">
+					</div>
 					<table class="table table-bordered">
 						<thead>
 							<tr>
@@ -67,8 +81,6 @@ $result=$mysqli->query($select_query);
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td colspan="3">
 							<?php
 							if($result->num_rows==0)
 							{
@@ -76,10 +88,6 @@ $result=$mysqli->query($select_query);
 							}
 							else
 							{
-							?>
-							</td>
-							</tr>
-							<?php
 							$counter=1;
 							while ($row=$result->fetch_array()) {
 								if($counter==1)
