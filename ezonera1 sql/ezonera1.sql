@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 05, 2019 at 07:36 PM
+-- Generation Time: Jan 18, 2019 at 07:29 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -30,15 +30,18 @@ CREATE TABLE `compname` (
   `CompID` int(10) NOT NULL,
   `CompName` varchar(70) NOT NULL,
   `CompSite` varchar(1000) NOT NULL,
-  `CompStatus` text NOT NULL
+  `CompStatus` text,
+  `CompRemarks` varchar(1000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `compname`
 --
 
-INSERT INTO `compname` (`CompID`, `CompName`, `CompSite`, `CompStatus`) VALUES
-(1, 'google Inc.', 'https://www.google.com', '');
+INSERT INTO `compname` (`CompID`, `CompName`, `CompSite`, `CompStatus`, `CompRemarks`) VALUES
+(1, 'google Inc.', 'https://www.google.com', '', NULL),
+(2, 'xyz', 'xyz.com', '', NULL),
+(3, 'Malwarebytes', 'https://www.malwarebytes.com', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -65,7 +68,12 @@ INSERT INTO `empemail` (`EmpEmailID`, `EmpID`, `EmpEmail`, `EmpEmailStatus`) VAL
 (16, 5, 'gwens@oscorp.com', NULL),
 (17, 5, 'gwenStacy@oscorp.com', 'incorrect'),
 (18, 6, 'eddie@dailybugle.com', NULL),
-(19, 6, 'ebrock@dailybugle.com', NULL);
+(19, 6, 'ebrock@dailybugle.com', NULL),
+(22, 9, 'jjernigan@malwarebytes.com', NULL),
+(23, 10, 'mkleczynski@malwarebytes.com', NULL),
+(24, 10, 'marcin.kleczynski@malwarebytes.com', NULL),
+(26, 11, 'bruce@shield.com', NULL),
+(29, 12, 'bbanner@shield.com', NULL);
 
 -- --------------------------------------------------------
 
@@ -92,7 +100,11 @@ INSERT INTO `empname` (`EmpID`, `CompID`, `EmpName`, `EmpDesig`, `EmpStatus`, `E
 (3, 1, 'Maria Hill', 'Director HR', 'point-of-Contact', NULL),
 (4, 1, 'Peter Parker', 'Director Engineering', NULL, NULL),
 (5, 1, 'Gwen Stacy', 'Director Engineering', NULL, NULL),
-(6, 1, 'Eddie Brock', 'CTO', NULL, NULL);
+(6, 1, 'Eddie Brock', 'CTO', NULL, NULL),
+(9, 3, 'John Jernigan', 'Director HR', NULL, NULL),
+(10, 3, 'Marcin Kleczynski', 'CEO', NULL, NULL),
+(11, 1, 'Bruce Banner', 'Scientist', NULL, NULL),
+(12, 1, 'Bruce Banner', 'physicist', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -164,6 +176,7 @@ ALTER TABLE `compname`
 --
 ALTER TABLE `empemail`
   ADD PRIMARY KEY (`EmpEmailID`),
+  ADD UNIQUE KEY `EmpEmail` (`EmpEmail`),
   ADD KEY `EmpID` (`EmpID`);
 
 --
@@ -197,17 +210,17 @@ ALTER TABLE `radetails`
 -- AUTO_INCREMENT for table `compname`
 --
 ALTER TABLE `compname`
-  MODIFY `CompID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `CompID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `empemail`
 --
 ALTER TABLE `empemail`
-  MODIFY `EmpEmailID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `EmpEmailID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 --
 -- AUTO_INCREMENT for table `empname`
 --
 ALTER TABLE `empname`
-  MODIFY `EmpID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `EmpID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `profilelog`
 --

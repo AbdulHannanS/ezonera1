@@ -2,6 +2,7 @@
 if(isset($_POST['testtable']))
 {
 	print_r($_POST);
+	//header("refresh:3, URL=1roughwork.php");
 }
 ?>
 <!DOCTYPE html>
