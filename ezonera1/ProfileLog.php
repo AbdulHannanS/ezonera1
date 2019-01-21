@@ -1,6 +1,10 @@
 <?php
 //Let the User select the date here, and show a profile log below for that date
 session_start();
+if(!isset($_SESSION['RAID']))
+{
+	header("location:Login.php");
+}
 if(isset($_POST['Profile_dt']))
 {
 	$_SESSION['prof_dt']=$_POST['Profile_dt'];
@@ -46,10 +50,10 @@ function populate_Profile_log($pdate)
 		{
 			background-color: green;
 		}
-		}
 	</style>
 </head>
 <body>
+	<?php include 'nav_bar.php'; ?>
  <!-- add a date field on the top with 2 buttons. 1st will enable the  date field if the use wants to change the date field. Second will submit the date and will set the session variable for date. -->
  	<div style="padding: 3px; text-align: center; margin-top: 8px;">
 		<form action="" method="post" class="form-inline">
@@ -67,7 +71,8 @@ function populate_Profile_log($pdate)
 		<div class="col-sm-12">
 			<!-- https://www.formget.com/angularjs-crud/#crud_read
 			show table using angular -->
-			<form method="post" action="3roughwork.php">
+			<!-- <form method="post" action="CompSearch.php"> -->	
+			<form method="post" action="Delete_log_row.php">
 				<table class="table table-bordered table-fixed">
 					<thead>
 						<tr><th>Sr. No.</th>
@@ -83,7 +88,7 @@ function populate_Profile_log($pdate)
 					</thead>
 					<tbody>
 						<tr><td colspan="10" style="text-align: center;"><button type="submit" class="btn btn-default" name="Delete_line">Delete row</button>&nbsp;&nbsp;&nbsp;
-							<!-- change may be needed while migrating to another server --><button class="btn btn-default" onclick="Location.href='3roughwork.php';">Add a Company</button></td></tr>
+							<!-- change may be needed while migrating to another server --><a href='CompSearch.php'>Add a Company</a></td></tr>
 							<?php
 							if(isset($_SESSION['prof_dt']))
 							{

@@ -1,3 +1,10 @@
+<?php
+session_start();
+if(!isset($_SESSION['RAID']))
+{
+	header("location:Login.php");
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +18,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+	<?php include 'nav_bar.php'; ?>
 	<div class="container" style="margin-top:20px;">
 		<div class="row">
 			<div class="col-sm-12" style="background-color:lavender;"><h1 style="text-align: center;">Add a Company</h1>

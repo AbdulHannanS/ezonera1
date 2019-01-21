@@ -32,7 +32,7 @@
       $_SESSION['RAname'] = $RAdet['RAName'];
       $_SESSION['RAType'] = $RAdet['RAuserType'];
           // Redirect user to the profile page
-      //header("Location: index.php");
+      header("Location: ProfileLog.php");
     }
     else
     {
@@ -59,8 +59,8 @@
       
     </div>
   </div>
-<div class="container" style="width: 80%;">
-  <h2 style="text-align: center;">Log in to EZONE RA Profiling tool</h2>
+<div class="container" style="width: 20%; margin-top: 10%;">
+  <h2 style="text-align: center;">ETS Login</h2>
   <form action="" method="post">
     <div class="form-group">
       <label for="email">Email:</label>
@@ -70,7 +70,7 @@
       <label for="pwd">Password:</label>
       <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="RApwd">
     </div>
-    <button type="submit" class="btn btn-default">Log In</button>
+    <button type="submit" class="btn btn-default center-block">Log In</button>
   </form>
 </div>
 

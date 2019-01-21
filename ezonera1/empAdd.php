@@ -1,17 +1,23 @@
 <?php
+session_start();
+if(!isset($_SESSION['RAID']))
+{
+	header("location:Login.php");
+}
 $comp_ID=$_GET['compID'];
 function row_creator($arr)
 {
 $table_row="<tr>
-<td data-toggle='tooltip' title='". $arr[4] ."' class='". $arr[4] ."'> <input type='checkbox' name='empArray[]' value='". $arr[2] ."'> ". $arr[3] ."</td><td>". $arr[5] ."</td>
-<td data-toggle='tooltip' title='". $arr[8] ."' class='". $arr[8] ."'> <input type='checkbox' name='emailArray[]' value='". $arr[6] ."'> ". $arr[7] ."</td>
+<td data-toggle='tooltip' title='". $arr['EmpStatus'] ."' class='". $arr['EmpStatus'] ."'> <input type='checkbox' name='empArray[]' value='". $arr['EmpID'] ."' onclick='handleClick(this)'> ". $arr['EmpName'] ."</td><td>". $arr['EmpDesig'] ."</td>
+<td data-toggle='tooltip' title='". $arr['EmpEmailStatus'] ."' class='". $arr['EmpEmailStatus'] ."'> <input type='checkbox' name='emailArray[]' value='". $arr['EmpEmailID'] ."'> ". $arr['EmpEmail'] ."</td>
 </tr>";
 //return $table_row;
 echo $table_row;
 }
 require 'dbconn.php';
-$select_query="SELECT compname.CompName, compname.CompSite, empname.EmpID, `empname`.`EmpName`, empname.EmpStatus, `empname`.`EmpDesig`, empemail.EmpEmailID, `empemail`.`EmpEmail`, empemail.EmpEmailStatus FROM `empname`, `empemail`, compname WHERE empname.EmpID=empemail.EmpID and compname.CompID=".$comp_ID;
+$select_query="SELECT compname.CompName, compname.CompRemarks, compname.CompSite, empname.EmpID, `empname`.`EmpName`, empname.EmpStatus, `empname`.`EmpDesig`, empemail.EmpEmailID, `empemail`.`EmpEmail`, empemail.EmpEmailStatus FROM `empname`, `empemail`, compname WHERE empname.EmpID=empemail.EmpID AND compname.CompID=empname.CompID AND compname.CompID=". $_GET['compID'];
 $result=$mysqli->query($select_query);
+//$mysqli->close();
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,15 +29,35 @@ $result=$mysqli->query($select_query);
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
-		function compNameDisplay(cname)
-		{
-			document.getElementById("compNameHeading").innerText=cname;
-		}
-		function compSiteDisplay(csite)
-		{
-			document.getElementById("compSiteHeading").innerText=csite;
-		}
 		// Create script where I have to just click the employee checkbox to enable the relevant email addresses only then will the user be able to proceed with adding the company to the profiling list.
+		// $(document).ready(function(){$('input[type="checkbox"]').click(function(){alert("you clicked a check box");})});
+		function handleClick(el) {
+			checkStat=el.checked;
+			var rowChildArr=el.parentElement.parentElement.childNodes;
+			rowChildArr[4].childNodes[1].checked=checkStat;
+		}
+		<?php
+			$comp_Name_query="SELECT * FROM `compname` WHERE `CompID`=". $comp_ID;
+			$rez=$mysqli->query($comp_Name_query);
+			if($rez->num_rows==1)
+			{
+				$row1=$rez->fetch_assoc();
+				?>
+				$(document).ready(function(){$("#compNameHeading").text(<?php echo "'". $row1['CompName']. "'"; ?>);
+					$("#compNameHeading").attr("class", <?php echo "'" . $row1['CompStatus']. "'"; ?>);
+					$("#compSiteHeading").text(<?php echo "'". $row1['CompSite'] ."'"; ?>);
+					$("#compRemarks").text(<?php echo "'". $row1['CompRemarks'] ."'" ?>);
+				});
+
+				<?php
+			}
+			$mysqli->close();
+		?>
+		$(document).ready(function(){
+			$('.mailbx').keyup(function() {
+  				$(this).val(this.value.toLowerCase().replace(/\s/g, ''));
+			});
+		});
 	</script>
 	<style type="text/css">
 		.DNC, .incorrect{
@@ -41,10 +67,10 @@ $result=$mysqli->query($select_query);
 		{
 			background-color: green;
 		}
-		}
 	</style>
 </head>
 <body>
+	<?php include 'nav_bar.php'; ?>
 	<div class="container" style="margin-top: 20px;">
 		<div class="row">
 			<div class="col-sm-12" style="background-color:lavender;">
@@ -53,6 +79,8 @@ $result=$mysqli->query($select_query);
 				</h3>
 				<h4 style="text-align: center;" id="compSiteHeading">					
 				</h4>
+				<h6 style="text-align: center;" id="compRemarks">					
+				</h6>
 				<!-- company name so the user knows the company to which he is adding the employee to -->
 			</div>
 		</div>
@@ -69,10 +97,10 @@ $result=$mysqli->query($select_query);
 						<input type="text" class="form-control" id="jobLoc" placeholder="Enter job Location" name="job_loc">
 					</div>
 					<div class="form-group">
-						<label for="JDLink">Job Description Link:</label>
-						<input type="text" class="form-control" id="JDLink" placeholder="Enter job Description link" name="JD_link" maxlength="2000">
+						<label for="JDLink">Job Description Link (required):</label>
+						<input type="text" class="form-control" id="JDLink" placeholder="Enter job Description link" name="JD_link" maxlength="2000" required>
 					</div>
-					<table class="table table-bordered">
+					<table class="table table-bordered" id="empDetailsTable">
 						<thead>
 							<tr>
 								<th>Employee Name</th>
@@ -84,29 +112,18 @@ $result=$mysqli->query($select_query);
 							<?php
 							if($result->num_rows==0)
 							{
-								echo "No Records Found";
+								echo "<tr><td colspan='3'><h3 style='text-align:center;'>No Records Found</h3></td></tr>";
 							}
 							else
 							{
-							$counter=1;
-							while ($row=$result->fetch_array()) {
-								if($counter==1)
-								{
-									echo "<script type='text/javascript'>compNameDisplay('". $row[0] ."');</script>";
-									echo "<script type='text/javascript'>compSiteDisplay('". $row[1] ."');</script>";
-									echo row_creator($row);
-								}
-								else
-								{
-									echo row_creator($row);
-								}
-								$counter++;
+							while ($row=$result->fetch_assoc()) {
+								echo row_creator($row);
 							}
 						}
 							?>
 						</tbody>
 					</table>
-					<button type="submit" class="btn btn-default center-block">Proceed to profiling these details</button>
+					<button type="submit" class="btn btn-default center-block" <?php if($result->num_rows==0){echo "disabled";} ?>>Proceed to profiling these details</button>
 			</form>
 			</div>
 		</div>
@@ -127,21 +144,20 @@ $result=$mysqli->query($select_query);
 					<hr size="20">
 					<div class="form-group">
 						<label for="empEmail1">Employee email Address 1 (required): </label>
-						<input type="email" class="form-control" id="empEmail1" placeholder="Enter Employee Email Address" name="emp_Email1" maxlength="300" required="true">
+						<input type="email" class="form-control mailbx" id="empEmail1" placeholder="Enter Employee Email Address" name="emp_Email1" maxlength="300" required="true">
 					</div>
 					<div class="form-group">
 						<label for="empEmail2">Employee email Address 2: </label>
-						<input type="email" class="form-control" id="empEmail2" placeholder="Enter Employee Email Address" name="emp_Email2" maxlength="300">
+						<input type="email" class="form-control mailbx" id="empEmail2" placeholder="Enter Employee Email Address" name="emp_Email2" maxlength="300">
 					</div>
 					<div class="form-group">
 						<label for="empEmail3">Employee email Address 3: </label>
-						<input type="email" class="form-control" id="empEmail3" placeholder="Enter Employee Email Address" name="emp_Email3" maxlength="300">
+						<input type="email" class="form-control mailbx" id="empEmail3" placeholder="Enter Employee Email Address" name="emp_Email3" maxlength="300">
 					</div>
 					<button type="submit" class="btn btn-default center-block">Add and Proceed for another Employee addition</button>
 				</form>
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>

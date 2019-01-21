@@ -7,6 +7,7 @@ echo strlen($_POST['emp_Email2']);
 if(isset($_POST['emp_Name']))
 {
 	require 'dbconn.php';
+	//check before inserting if the email address has already been insrted in the Employee column
 	$stmt=$mysqli->prepare("INSERT INTO empname (CompID, EmpName, EmpDesig) VALUES (?, ?, ?)");
 	$stmt->bind_param("iss",$comID, $emp_Name, $emp_designation);
 	$comID=$_GET['comp'];
@@ -43,4 +44,5 @@ if(isset($_POST['emp_Name']))
 	
 }
 header('Location:empAdd.php?compID='.$comID);
+//header("refresh:5, URL=empAdd.php?compID=".$comID);
 ?>

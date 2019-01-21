@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 05, 2019 at 07:36 PM
+-- Generation Time: Jan 21, 2019 at 07:21 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -30,15 +30,18 @@ CREATE TABLE `compname` (
   `CompID` int(10) NOT NULL,
   `CompName` varchar(70) NOT NULL,
   `CompSite` varchar(1000) NOT NULL,
-  `CompStatus` text NOT NULL
+  `CompStatus` text,
+  `CompRemarks` varchar(1000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `compname`
 --
 
-INSERT INTO `compname` (`CompID`, `CompName`, `CompSite`, `CompStatus`) VALUES
-(1, 'google Inc.', 'https://www.google.com', '');
+INSERT INTO `compname` (`CompID`, `CompName`, `CompSite`, `CompStatus`, `CompRemarks`) VALUES
+(1, 'google Inc.', 'https://www.google.com', 'contact-later', 'profile after 19th jan'),
+(2, 'xyz', 'xyz.com', '', NULL),
+(3, 'Malwarebytes', 'https://www.malwarebytes.com', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -65,7 +68,13 @@ INSERT INTO `empemail` (`EmpEmailID`, `EmpID`, `EmpEmail`, `EmpEmailStatus`) VAL
 (16, 5, 'gwens@oscorp.com', NULL),
 (17, 5, 'gwenStacy@oscorp.com', 'incorrect'),
 (18, 6, 'eddie@dailybugle.com', NULL),
-(19, 6, 'ebrock@dailybugle.com', NULL);
+(19, 6, 'ebrock@dailybugle.com', NULL),
+(22, 9, 'jjernigan@malwarebytes.com', NULL),
+(23, 10, 'mkleczynski@malwarebytes.com', NULL),
+(24, 10, 'marcin.kleczynski@malwarebytes.com', NULL),
+(26, 11, 'bruce@shield.com', NULL),
+(29, 12, 'bbanner@shield.com', NULL),
+(30, 13, 'harry@oscorp.com', NULL);
 
 -- --------------------------------------------------------
 
@@ -89,10 +98,15 @@ CREATE TABLE `empname` (
 INSERT INTO `empname` (`EmpID`, `CompID`, `EmpName`, `EmpDesig`, `EmpStatus`, `EmpPhone`) VALUES
 (1, 1, 'Jeff Bezos', 'CEO', 'DNC', NULL),
 (2, 1, 'Phil Coulson', 'Director Engineering', NULL, NULL),
-(3, 1, 'Maria Hill', 'Director HR', 'point-of-Contact', NULL),
+(3, 1, 'Maria Hills', 'VP HR', 'DNC', ''),
 (4, 1, 'Peter Parker', 'Director Engineering', NULL, NULL),
 (5, 1, 'Gwen Stacy', 'Director Engineering', NULL, NULL),
-(6, 1, 'Eddie Brock', 'CTO', NULL, NULL);
+(6, 1, 'Eddie Brock', 'CTO', NULL, NULL),
+(9, 3, 'John Jernigan', 'Director HR', NULL, NULL),
+(10, 3, 'Marcin Kleczynski', 'CEO', NULL, NULL),
+(11, 1, 'Bruce Banner', 'Scientist', NULL, NULL),
+(12, 1, 'Bruce Banner', 'physicist', NULL, NULL),
+(13, 2, 'Harry Osborn', 'VP Operations', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -147,7 +161,10 @@ CREATE TABLE `radetails` (
 --
 
 INSERT INTO `radetails` (`RAID`, `RAName`, `RAemail`, `RAPass`, `RAuserType`) VALUES
-(1, 'Test', 'ahannan@ezonestaffing.com', '1234', 'Admin');
+(1, 'Test', 'ahannan@ezonestaffing.com', '1234', 'Admin'),
+(2, 'Kashif', 'mak3950@gmail.com', '1234', 'normal'),
+(3, 'Faizan', 'faiz16893@gmail.com', '1234', 'normal'),
+(4, 'Mutaal', 'm.mutaal12@gmail.com', '1234', 'normal');
 
 --
 -- Indexes for dumped tables
@@ -164,6 +181,7 @@ ALTER TABLE `compname`
 --
 ALTER TABLE `empemail`
   ADD PRIMARY KEY (`EmpEmailID`),
+  ADD UNIQUE KEY `EmpEmail` (`EmpEmail`),
   ADD KEY `EmpID` (`EmpID`);
 
 --
@@ -197,17 +215,17 @@ ALTER TABLE `radetails`
 -- AUTO_INCREMENT for table `compname`
 --
 ALTER TABLE `compname`
-  MODIFY `CompID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `CompID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `empemail`
 --
 ALTER TABLE `empemail`
-  MODIFY `EmpEmailID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `EmpEmailID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT for table `empname`
 --
 ALTER TABLE `empname`
-  MODIFY `EmpID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `EmpID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `profilelog`
 --
@@ -217,7 +235,7 @@ ALTER TABLE `profilelog`
 -- AUTO_INCREMENT for table `radetails`
 --
 ALTER TABLE `radetails`
-  MODIFY `RAID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `RAID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- Constraints for dumped tables
 --
